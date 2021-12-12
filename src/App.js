@@ -5,7 +5,7 @@ import getWinner from "./helper/getWinner";
 
 const App = () => {
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [step, setStep] = useState(0);
+  const [turnNumber, setTurnNumber] = useState(0);
   const [xTurn, setXTurn] = useState(true);
 
   /**
@@ -13,13 +13,13 @@ const App = () => {
    * @param {int} idx The index of the grid's square to mark
    */
   const updateMark = (idx) => {
-    const newHistory = history.slice(0, step + 1);
+    const newHistory = history.slice(0, turnNumber + 1);
     const squares = newHistory[newHistory.length - 1].slice();
     if (!getWinner(squares) && squares[idx] === null) {
       squares[idx] = xTurn ? "X" : "O";
       newHistory.push(squares);
       setHistory(newHistory);
-      setStep(newHistory.length - 1);
+      setTurnNumber(newHistory.length - 1);
       setXTurn((turn) => !turn);
     }
   };
@@ -29,23 +29,23 @@ const App = () => {
    * @param {int} moveIdx The game state to rewind to a previous state
    */
   const rewind = (moveIdx) => {
-    setStep(moveIdx);
+    setTurnNumber(moveIdx);
     setXTurn(moveIdx % 2 === 0);
   };
 
   /**
    * Renders a list of buttons that let you rewind to previous game states
    */
-  const getMoveList = history.map((gridState, moveIdx) => {
-    const description = moveIdx ? "Go to move #" + moveIdx : "Go to game start";
+  const getMoveList = history.map((_, turn) => {
+    const description = turn ? "Go to move #" + turn : "Go to game start";
     return (
-      <li key={moveIdx}>
-        <button onClick={() => rewind(moveIdx)}>{description}</button>
+      <li key={turn}>
+        <button onClick={() => rewind(turn)}>{description}</button>
       </li>
     );
   });
 
-  const current = history[step];
+  const current = history[turnNumber];
   const winner = getWinner(current);
   let status = "Next Player: " + (xTurn ? "X" : "O");
   if (winner) {
@@ -54,7 +54,10 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Welcome to Tic-Tac-Toe!</h1>
+      <div className="header">
+        <h1>Welcome to Tic-Tac-Toe!</h1>
+        <p>By John Marcus Mabanta • Source Code • Original Tutorial</p>
+      </div>
       <div className="game">
         <div className="game-board">
           <Board squares={current} updateMark={(i) => updateMark(i)} />
