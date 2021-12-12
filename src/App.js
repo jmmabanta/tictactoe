@@ -4,7 +4,7 @@ import Board from "./components/Board";
 import getWinner from "./helper/getWinner";
 
 const App = () => {
-  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
+  const [history, setHistory] = useState([Array(9).fill(null)]);
   const [step, setStep] = useState(0);
   const [xTurn, setXTurn] = useState(true);
 
@@ -14,11 +14,10 @@ const App = () => {
    */
   const updateMark = (idx) => {
     const newHistory = history.slice(0, step + 1);
-    const current = newHistory[newHistory.length - 1];
-    const squares = current.squares.slice();
+    const squares = newHistory[newHistory.length - 1].slice();
     if (!getWinner(squares) && squares[idx] === null) {
       squares[idx] = xTurn ? "X" : "O";
-      newHistory.push({ squares: squares });
+      newHistory.push(squares);
       setHistory(newHistory);
       setStep(newHistory.length - 1);
       setXTurn((turn) => !turn);
@@ -47,7 +46,7 @@ const App = () => {
   });
 
   const current = history[step];
-  const winner = getWinner(current.squares);
+  const winner = getWinner(current);
   let status = "Next Player: " + (xTurn ? "X" : "O");
   if (winner) {
     status = "THE WINNER IS: " + winner;
@@ -58,7 +57,7 @@ const App = () => {
       <h1>Welcome to Tic-Tac-Toe!</h1>
       <div className="game">
         <div className="game-board">
-          <Board squares={current.squares} updateMark={(i) => updateMark(i)} />
+          <Board squares={current} updateMark={(i) => updateMark(i)} />
         </div>
         <div className="game-info">
           <div>{status}</div>
