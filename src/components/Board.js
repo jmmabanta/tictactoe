@@ -1,44 +1,13 @@
-import { useState } from "react";
 import Square from "./Square";
 
-const Board = () => {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xTurn, setXTurn] = useState(true);
-
-  const updateMark = (idx, val) => {
-    if (!getWinner() && squares[idx] === null) {
-      // Update Visuals
-      const newSquares = squares.slice();
-      newSquares[idx] = xTurn ? "X" : "O";
-      setSquares(newSquares);
-      setXTurn((turn) => !turn);
-    }
-  };
-
-  const getWinner = () => {
-    const winningLines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < winningLines.length; i++) {
-      const [a, b, c] = winningLines[i];
-      if (
-        squares[a] &&
-        squares[a] === squares[b] &&
-        squares[b] === squares[c]
-      ) {
-        return squares[a];
-      }
-    }
-    return null;
-  };
-
+/**
+ * @typedef BoardProps
+ * @property {Array} squares The current state of the game board
+ * @property {function} updateMark Updates the square's mark on the game board
+ * @param {BoardProps} props
+ * @returns
+ */
+const Board = (props) => {
   /**
    * Renders a square to the tic-tac-toe grid
    * @param {int} idx The index of the square relative to the squares state.
@@ -46,20 +15,16 @@ const Board = () => {
    * @returns
    */
   const renderSquare = (idx) => {
-    return <Square mark={squares[idx]} updateMark={() => updateMark(idx)} />;
+    return (
+      <Square
+        mark={props.squares[idx]}
+        updateMark={() => props.updateMark(idx)}
+      />
+    );
   };
 
-  const winner = getWinner();
-  let status = "Next Player: " + (xTurn ? "X" : "O");
-  if (winner) {
-    status = "THE WINNER IS: " + winner;
-  }
-
-  // We will be using the Magic Square approach for Tic-Tac-Toe
-  // https://en.wikipedia.org/wiki/Magic_square
   return (
     <div className="board">
-      <div className="status">{status}</div>
       <div className="board-row">
         {renderSquare(0)}
         {renderSquare(1)}
