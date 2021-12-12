@@ -56,7 +56,24 @@ const App = () => {
     <div className="App">
       <div className="header">
         <h1>Welcome to Tic-Tac-Toe!</h1>
-        <p>By John Marcus Mabanta • Source Code • Original Tutorial</p>
+        <p>
+          By John Marcus Mabanta •{" "}
+          <a
+            href="https://github.com/jmmabanta/tictactoe"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Source Code
+          </a>{" "}
+          •{" "}
+          <a
+            href="https://reactjs.org/tutorial/tutorial.html"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Original Tutorial
+          </a>
+        </p>
       </div>
       <div className="game">
         <div className="game-board">
