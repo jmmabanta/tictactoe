@@ -37,11 +37,11 @@ const App = () => {
    * Renders a list of buttons that let you rewind to previous game states
    */
   const getMoveList = history.map((_, turn) => {
-    const description = turn ? "Go to move #" + turn : "Go to game start";
+    const description = turn ? "Go to Turn #" + turn : "Go to Game Start";
     return (
-      <li key={turn}>
-        <button onClick={() => rewind(turn)}>{description}</button>
-      </li>
+      <button key={turn} onClick={() => rewind(turn)}>
+        {description}
+      </button>
     );
   });
 
@@ -80,8 +80,8 @@ const App = () => {
           <Board squares={current} updateMark={(i) => updateMark(i)} />
         </div>
         <div className="game-info">
-          <div>{status}</div>
-          <ol>{getMoveList}</ol>
+          <p>{status}</p>
+          {getMoveList}
         </div>
       </div>
     </div>

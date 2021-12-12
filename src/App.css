@@ -55,4 +55,7 @@ ul {
 
 .game-info {
   margin-top: 1vh;
+  margin-left: 1vw;
+  display: flex;
+  flex-direction: column;
 }
