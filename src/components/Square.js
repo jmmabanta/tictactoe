@@ -1,17 +1,15 @@
-import { useState } from "react";
-
 /**
  * A Grid Square
  * @typedef SquareProps
- * @property {int} value The numerical value assigned to the square
+ * @property {string} mark The current player mark of the square.
+ * @property {function} updateMark Updates the current player mark onClick.
  * @param {SquareProps} props
  * @returns A Tic-Tac-Toe grid square
  */
 const Square = (props) => {
-  const [current, setCurrent] = useState("");
   return (
-    <div className="square" onClick={() => setCurrent("X")}>
-      {current}
+    <div className="square" onClick={() => props.updateMark()}>
+      {props.mark}
     </div>
   );
 };
