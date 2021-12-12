@@ -4,7 +4,7 @@ import Board from "./components/Board";
 import getWinner from "./helper/getWinner";
 
 const App = () => {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([{ squares: Array(9).fill(null) }]);
   const [step, setStep] = useState(0);
   const [xTurn, setXTurn] = useState(true);
 
@@ -14,12 +14,13 @@ const App = () => {
    */
   const updateMark = (idx) => {
     const newHistory = history.slice(0, step + 1);
-    const newSquares = newHistory[newHistory.length - 1].slice();
-    if (!getWinner(newSquares) && newSquares[idx] === null) {
-      newSquares[idx] = xTurn ? "X" : "O";
-      newHistory.push(newSquares);
+    const current = newHistory[newHistory.length - 1];
+    const squares = current.squares.slice();
+    if (!getWinner(squares) && squares[idx] === null) {
+      squares[idx] = xTurn ? "X" : "O";
+      newHistory.push({ squares: squares });
       setHistory(newHistory);
-      setStep(history.length);
+      setStep(newHistory.length - 1);
       setXTurn((turn) => !turn);
     }
   };
@@ -46,7 +47,7 @@ const App = () => {
   });
 
   const current = history[step];
-  const winner = getWinner(current);
+  const winner = getWinner(current.squares);
   let status = "Next Player: " + (xTurn ? "X" : "O");
   if (winner) {
     status = "THE WINNER IS: " + winner;
@@ -57,7 +58,7 @@ const App = () => {
       <h1>Welcome to Tic-Tac-Toe!</h1>
       <div className="game">
         <div className="game-board">
-          <Board squares={current} updateMark={(i) => updateMark(i)} />
+          <Board squares={current.squares} updateMark={(i) => updateMark(i)} />
         </div>
         <div className="game-info">
           <div>{status}</div>
